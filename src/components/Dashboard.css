@@ -1,0 +1,27 @@
+/* Container taking up the full height of the viewport */
+.dashboard-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Top section: 5% of the height with #206f9d color */
+  .top-section {
+    background-color: #206f9d;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  /* Bottom section: 95% of the height with #38b6ff color */
+  .bottom-section {
+    background-color: #38b6ff;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
