@@ -8,7 +8,7 @@
 /* Top section: 5% of the height with #206f9d color and horizontal flex alignment */
 .top-section {
     background-color: #206f9d;
-    height: 5%;
+    height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,8 +26,16 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    color: white;
+    color: rgb(255, 255, 255);
 }
+.background-section {
+    flex-grow: 1; /* Allow this section to take the remaining space */
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    background-color: #38b6ff; /* Set your blue background */
+  }
+  
 
 /* Left content - Welcome user */
 .left-content {
@@ -79,3 +87,17 @@
     font-weight: bold;
     color: white;
 }
+
+.back-button {
+    margin-left: 10px; /* Space between the welcome text and the button */
+    padding: 5px 10px; /* Padding for the button */
+    background-color: #007bff; /* Example background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
