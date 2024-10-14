@@ -1,54 +1,84 @@
-import React, { useState } from 'react'; // Import React and useState
-import './Dashboard.css'; // Import your CSS styles
-import StartNewProject from './StartNewProject'; // Ensure this path is correct
-import ProjectQueue from './ProjectQueue'; // Import other components if you have them
-import CompletedProjects from './CompletedProjects';
+import React, { useState } from 'react';
+import './HolyMotherOf.css';
+import StartNewProject from './StartNewProject';
+import { Button, Card, CardActionArea, CardMedia, CardContent, Typography, Box } from '@mui/material'; // Import Material UI components
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import Back Arrow Icon
 
 const Dashboard = () => {
-  const [currentView, setCurrentView] = useState('dashboard'); // State to manage the current view
+  const [currentView, setCurrentView] = useState('dashboard');
 
   const handleClick = (label) => {
     if (label === 'Start a New Project') {
-      setCurrentView('startNewProject'); // Set view to StartNewProject
-    } else if (label === 'See Project Queue') {
-      setCurrentView('projectQueue'); // Set view to ProjectQueue
-    } else if (label === 'See Completed Projects') {
-      setCurrentView('completedProjects'); // Set view to CompletedProjects
+      setCurrentView('startNewProject');
     } else {
       alert(`Clicked on ${label}`);
     }
   };
 
-    // Function to go back to the dashboard
-    const handleBack = () => {
-      setCurrentView('dashboard'); // Set view to dashboard
-    };
+  const handleBack = () => {
+    setCurrentView('dashboard'); // Go back to dashboard
+  };
 
-  // Render different components based on currentView state
   const renderContent = () => {
     switch (currentView) {
       case 'startNewProject':
         return <StartNewProject />;
-      case 'projectQueue':
-        return <ProjectQueue />;
-      case 'completedProjects':
-        return <CompletedProjects />;
       case 'dashboard':
       default:
         return (
           <div className="bottom-section">
-            <div className="project-card" onClick={() => handleClick('Start a New Project')}>
-              <img src={process.env.PUBLIC_URL + "/images/ic1.png"} alt="Start a New Project" />
-              <p>START A NEW PROJECT</p>
-            </div>
-            <div className="project-card" onClick={() => handleClick('See Project Queue')}>
-              <img src={process.env.PUBLIC_URL + "/images/ic2.png"} alt="See Project Queue" />
-              <p>SEE PROJECT QUEUE</p>
-            </div>
-            <div className="project-card" onClick={() => handleClick('See Completed Projects')}>
-              <img src={process.env.PUBLIC_URL + "/images/ic3.png"} alt="See Completed Projects" />
-              <p>SEE COMPLETED PROJECTS</p>
-            </div>
+            <Box display="flex" justifyContent="space-around" width="100%">
+              {/* Start a New Project Card */}
+              <Card className="project-card-s" onClick={() => handleClick('Start a New Project')}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    image={process.env.PUBLIC_URL + "/images/ic1.png"}
+                    alt="Start a New Project"
+                    className="project-card-media"
+                  />
+                  <CardContent className="project-card-content">
+                    <Typography variant="h7" component="p" align="center" className="project-card-text">
+                      START A NEW PROJECT
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+
+              {/* See Project Queue Card */}
+              <Card className="project-card-s" onClick={() => handleClick('See Project Queue')}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    image={process.env.PUBLIC_URL + "/images/ic2.png"}
+                    alt="See Project Queue"
+                    className="project-card-media"
+                  />
+                  <CardContent className="project-card-content">
+                    <Typography variant="h7" component="p" align="center" className="project-card-text">
+                      SEE PROJECT QUEUE
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+
+              {/* See Completed Projects Card */}
+              <Card className="project-card-s" onClick={() => handleClick('See Completed Projects')}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    image={process.env.PUBLIC_URL + "/images/ic3.png"}
+                    alt="See Completed Projects"
+                    className="project-card-media"
+                  />
+                  <CardContent className="project-card-content">
+                    <Typography variant="h7" component="p" align="center" className="project-card-text">
+                      SEE COMPLETED PROJECTS
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Box>
           </div>
         );
     }
@@ -59,10 +89,20 @@ const Dashboard = () => {
       {/* Top Section */}
       <div className="top-section">
         <div className="left-content">
-        <button onClick={handleBack} className="back-button">Back</button> {/* Back button beside welcome message */}
-          Welcome Chris
+          <span>Welcome Chris</span>
+          {/* Show the Back button only if not on the dashboard */}
+          {currentView !== 'dashboard' && (
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<ArrowBackIcon />}
+              onClick={handleBack}
+              style={{ marginLeft: '10px' }}
+            >
+              Back
+            </Button>
+          )}
         </div>
-        
         <div className="right-content">Pascual Creative</div>
       </div>
 

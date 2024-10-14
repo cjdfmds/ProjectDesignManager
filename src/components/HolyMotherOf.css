@@ -1,0 +1,173 @@
+/* Container taking up the full height of the viewport 
+   - `100vh` means 100% of the viewport height (the full browser window height)
+   - Using flexbox to arrange children in a column (top to bottom)
+*/
+.dashboard-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top section (header): 10% of the height with a blue background color 
+   - Horizontally aligns content using flexbox (`justify-content: space-between` places items on opposite sides)
+   - Vertically centers the content with `align-items: center`
+   - Adds padding for space between edges and content
+   - Sets text color to white and font size to 1.2rem (slightly larger text)
+*/
+.top-section {
+    background-color: #206f9d;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+/* Bottom section: 95% of the height with a light blue background color 
+   - Uses flexbox to space out child items (`justify-content: space-evenly`)
+   - Vertically centers the child elements with `align-items: center`
+*/
+.bottom-section {
+    background-color: #38b6ff;
+    height: 95%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: white;
+}
+
+/* Background section:
+   - Grows to take up any available remaining space
+   - Centers its children horizontally and vertically using flexbox
+   - The background color is set to light blue
+*/
+.background-section {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #38b6ff;
+}
+
+/* Styling for individual project cards
+   - Each card has a fixed width (150px) and height (200px)
+   - The background color is light blue with a margin around each card (20px)
+   - The corners of the card are rounded with `border-radius: 10px`
+*/
+.project-card-s {
+    width: 150px;
+    height: 200px;
+    background-color: #38b6ff;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.project-card {
+    width: 150px;
+    height: 200px;
+    background-color: #38b6ff;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+/* Styling for the image inside the card
+   - The image has a fixed height of 150px to ensure uniformity across cards
+*/
+.project-card-media {
+    height: 150px;
+}
+
+/* Card content area (where text will be placed)
+   - Uses flexbox to center the text both horizontally and vertically
+   - The background color is light blue
+   - Padding adds space around the text, and the height is set to 50px for consistent size
+*/
+.project-card-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #38b6ff;
+    padding: 5px;
+    height: 20px;
+}
+
+/* Text inside the card:
+   - Font size is set to 12px and bold
+   - Text is white and centered with `text-align: center`
+   - `line-height: 1.2` ensures the text is spaced nicely
+   - `word-wrap: break-word` prevents long text from overflowing, wrapping it instead
+*/
+.project-card-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    line-height: 1.2;
+    word-wrap: break-word;
+}
+
+/* Hover effect for cards:
+   - When you hover over a card, it will scale up slightly (grow) to 105% of its size
+   - `transition: transform 0.3s ease` ensures the scaling happens smoothly over 0.3 seconds
+*/
+.project-card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.project-card-s:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Styling for the back button next to 'Welcome Chris'
+   - Adds margins, padding, background color, and makes the text white
+   - Border is removed and the button has rounded corners
+   - `cursor: pointer` makes it clear this is clickable
+*/
+.back-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover effect for the back button:
+   - When the user hovers over the button, the background becomes a darker shade of blue
+*/
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+/* Container for the entire 'Start a New Project' section:
+   - Adds padding around the section and centers the text
+   - The text color is set to white
+*/
+.start-new-project {
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+/* Styling for the title in the 'Start a New Project' section:
+   - Sets the color of the title and adds margin space below the title
+*/
+.start-new-project h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* Container for the project items in 'Start a New Project':
+   - Uses flexbox to evenly distribute the project items
+   - Allows items to wrap onto the next line if there isn’t enough space on one line (`flex-wrap: wrap`)
+*/
+.project-items {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
