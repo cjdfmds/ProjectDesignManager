@@ -29,13 +29,13 @@
    - Uses flexbox to space out child items (`justify-content: space-evenly`)
    - Vertically centers the child elements with `align-items: center`
 */
+/* Default blue background for bottom-section */
 .bottom-section {
     background-color: #38b6ff;
-    height: 95%;
+    height: 90%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    color: white;
 }
 
 /* Background section:
@@ -43,13 +43,21 @@
    - Centers its children horizontally and vertically using flexbox
    - The background color is set to light blue
 */
+/* Default blue background for background-section */
 .background-section {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #38b6ff;
+    background-color: #38b6ff; /* Default background color */
 }
+
+/* White background when a project is selected */
+.white-background {
+    background-color: white;
+    color: black; /* Ensure text is visible */
+}
+
 
 /* Styling for individual project cards
    - Each card has a fixed width (150px) and height (200px)
@@ -68,7 +76,7 @@
     width: 150px;
     height: 200px;
     background-color: #38b6ff;
-    margin: 40px;
+    margin: 20px;
     border-radius: 10px;
 }
 

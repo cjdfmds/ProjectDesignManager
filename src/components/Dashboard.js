@@ -1,28 +1,40 @@
+import { Button, Card, CardActionArea, CardMedia, CardContent, Typography, Box } from '@mui/material';
 import React, { useState } from 'react';
 import './HolyMotherOf.css';
 import StartNewProject from './StartNewProject';
-import { Button, Card, CardActionArea, CardMedia, CardContent, Typography, Box } from '@mui/material'; // Import Material UI components
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import Back Arrow Icon
 
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState('dashboard');
+  const [selectedProject, setSelectedProject] = useState(''); // Track the selected project
 
+  // Handle navigation between views
   const handleClick = (label) => {
     if (label === 'Start a New Project') {
       setCurrentView('startNewProject');
     } else {
-      alert(`Clicked on ${label}`);
+      setSelectedProject(label);
+      setCurrentView('projectView');
     }
   };
 
+  // Handle going back to the dashboard
   const handleBack = () => {
-    setCurrentView('dashboard'); // Go back to dashboard
+    setSelectedProject('');
+    setCurrentView('dashboard');
   };
 
+  // Render content based on current view
   const renderContent = () => {
     switch (currentView) {
       case 'startNewProject':
-        return <StartNewProject />;
+        return <StartNewProject onProjectClick={handleClick} />; // Show StartNewProject form
+      case 'projectView':
+        return (
+          <div className="project-selected-content">
+            <p>{selectedProject}</p> {/* Display selected project */}
+          </div>
+        );
       case 'dashboard':
       default:
         return (
@@ -89,8 +101,8 @@ const Dashboard = () => {
       {/* Top Section */}
       <div className="top-section">
         <div className="left-content">
-          <span>Welcome Chris</span>
-          {/* Show the Back button only if not on the dashboard */}
+          <span>{selectedProject || 'Welcome Chris'}</span>
+          {/* Show Back button if not on the dashboard */}
           {currentView !== 'dashboard' && (
             <Button
               variant="contained"
@@ -106,7 +118,7 @@ const Dashboard = () => {
         <div className="right-content">Pascual Creative</div>
       </div>
 
-      {/* Render the main content based on the current view */}
+      {/* Main Content */}
       <div className="background-section">
         {renderContent()}
       </div>
