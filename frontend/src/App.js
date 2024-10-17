@@ -6,7 +6,20 @@ import StartNewProject from './components/StartNewProject'; // Import your compo
 import ProjectQueue from './components/ProjectQueue'; // Import your ProjectQueue component
 import CompletedProjects from './components/CompletedProjects'; // Import your CompletedProjects component
 
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports'; // you can generate this file via Amplify CLI if desired
+
+Amplify.configure({
+  Auth: {
+    region: 'ap-southeast-2',
+    userPoolId: 'ap-southeast-2_wpBig9rKB',
+    userPoolWebClientId: '117jbifc6grn3ml2j7v0g96u95'
+  }
+});
+
+
 function App() {
+  
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
