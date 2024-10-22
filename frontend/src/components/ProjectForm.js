@@ -7,13 +7,6 @@ const ProjectForm = ({ projectName }) => {
   const [brief, setBrief] = useState('');
   const [dateNeeded, setDateNeeded] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
-
-    // AWS S3 Configuration
-    AWS.config.update({
-      region: 'ap-southeast-2', // e.g., 'us-east-1'
-      accessKeyId: 'AKIAYDWHTOLDQCQIAYGS',
-      secretAccessKey: 'eokAzEn23pVyIUoSij2FJmh1LlET/1PU8Xh4VGzy',
-    });
   
     const s3 = new AWS.S3();
   

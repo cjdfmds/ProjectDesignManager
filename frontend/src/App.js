@@ -5,12 +5,7 @@ import Dashboard from './components/Dashboard';
 import StartNewProject from './components/StartNewProject'; // Import your components
 import ProjectQueue from './components/ProjectQueue'; // Import your ProjectQueue component
 import CompletedProjects from './components/CompletedProjects'; // Import your CompletedProjects component
-
-import Amplify from 'aws-amplify';
-import awsconfig from './aws-exports'; // you can generate this file via Amplify CLI if desired
-
-
-
+import SignUpPage from './components/SignUpPage';
 
 function App() {
   
@@ -18,10 +13,13 @@ function App() {
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
       <Route path="/" element={<LoginPage />} />
+      <Route path="/ProjectDesignManager" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/start-new-project" element={<StartNewProject />} />
         <Route path="/project-queue" element={<ProjectQueue />} />
         <Route path="/completed-projects" element={<CompletedProjects />} />
+        <Route path="/signup" element={<SignUpPage  />} />
+        
       </Routes>
     </Router>
   );

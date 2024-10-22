@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { TextField, Button, Container, Typography, Box, CircularProgress } from '@mui/material';
+import awsConfig from './aws-export.js'; // Ensure the correct path
+import { Amplify } from 'aws-amplify';
+import { signIn } from 'aws-amplify/auth';
+
+Amplify.configure(awsConfig); // Configure Amplify
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -10,66 +16,71 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-  
+
     try {
-      const response = await fetch('https://3onj7rklk6.execute-api.ap-southeast-2.amazonaws.com/dev', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+      // Pass the authFlowType as part of the signIn options
+      await signIn({
+        username,
+        password,
+        authFlowType: 'CUSTOM_WITHOUT_SRP', // Specify the custom authentication flow
       });
       
-      if (!response.ok) {
-        throw new Error('Invalid credentials');
-      }
-
-      const data = await response.json();
-      
-      if (data.token) {
-        sessionStorage.setItem('token', data.token); // Use sessionStorage for better security
-        
-        if (data.groups.includes('Admins')) {
-          navigate('/admin-dashboard');
-        } else {
-          navigate('/dashboard');
-        }
-      } else {
-        alert('Invalid credentials');
-      }
+      alert('Login successful!');
+      localStorage.setItem('username', username);
+      navigate('/dashboard', { state: { username } });
     } catch (error) {
-      console.error('Error during login:', error);
-      alert(error.message || 'An error occurred during login.');
+      console.error('Login error:', error);
+      alert(error.message || 'Login failed.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div>
-      {isLoading ? <p>Loading...</p> : <h2>Login</h2>}
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Username: </label>
-          <input 
-            type="text" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            required 
+    <Container maxWidth="xs" style={{ marginTop: '100px' }}>
+      <Box display="flex" flexDirection="column" alignItems="center" p={3} boxShadow={3} borderRadius={4} bgcolor="background.paper">
+        <Typography variant="h4" component="h1" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleLogin} style={{ width: '100%' }}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
-        </div>
-        <div>
-          <label>Password: </label>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-        </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </div>
+          <Box mt={2}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              disabled={isLoading}
+            >
+              {isLoading ? <CircularProgress size={24} /> : 'Login'}
+            </Button>
+          </Box>
+        </form>
+        <Box mt={2}>
+          <Typography variant="body2">
+            Don't have an account? <Link to="/signup">Sign up</Link>
+          </Typography>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
