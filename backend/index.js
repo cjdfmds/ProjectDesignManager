@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
 const cors = require('cors'); // Import CORS package
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,7 +11,12 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors()); // Allow Cross-Origin requests
 
-
+// AWS S3 Configuration
+AWS.config.update({
+    region: 'ap-southeast-2', // e.g., 'us-east-1'
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
 
 // Cognito Identity Service Provider
 const cognito = new AWS.CognitoIdentityServiceProvider();
@@ -19,8 +25,8 @@ const jwt = require('jsonwebtoken');
 
 // DynamoDB setup
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const USER_POOL_ID = 'ap-southeast-2_wpBig9rKB';
-const USER_POOL_WEB_CLIENT_ID = '117jbifc6grn3ml2j7v0g96u95';
+const USER_POOL_ID = process.env.USER_POOL_ID;
+const USER_POOL_WEB_CLIENT_ID = process.env.USER_POOL_WEB_CLIENT_ID;
 
 const verifyToken = (token) => {
     try {

@@ -9,13 +9,7 @@ import CompletedProjects from './components/CompletedProjects'; // Import your C
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports'; // you can generate this file via Amplify CLI if desired
 
-Amplify.configure({
-  Auth: {
-    region: 'ap-southeast-2',
-    userPoolId: 'ap-southeast-2_wpBig9rKB',
-    userPoolWebClientId: '117jbifc6grn3ml2j7v0g96u95'
-  }
-});
+
 
 
 function App() {
