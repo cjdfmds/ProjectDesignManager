@@ -4,6 +4,10 @@ import { TextField, Button, Container, Typography, Box, CircularProgress } from 
 import awsConfig from '../aws-exports'; // Ensure the correct path
 import { Amplify } from 'aws-amplify';
 import { signIn } from 'aws-amplify/auth';
+import fs from 'fs';
+
+console.log('Current Directory:', __dirname);
+console.log('Contents:', fs.readdirSync(__dirname));
 
 Amplify.configure(awsConfig); // Configure Amplify
 
