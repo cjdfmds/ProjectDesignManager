@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, CircularProgress } from '@mui/material';
-import awsConfig from './aws-export.js'; // Ensure the correct path
+import awsConfig from './aws-exports.js'; // Ensure the correct path
 import { Amplify } from 'aws-amplify';
 import { signIn } from 'aws-amplify/auth';
 
