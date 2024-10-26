@@ -1,12 +1,25 @@
 import { Button, Card, CardActionArea, CardMedia, CardContent, Typography, Box } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HolyMotherOf.css';
 import StartNewProject from './StartNewProject';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import Back Arrow Icon
+import { signOut } from 'aws-amplify/auth';
 
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedProject, setSelectedProject] = useState(''); // Track the selected project
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    // Fetch the username from localStorage on component mount
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []); 
 
   // Handle navigation between views
   const handleClick = (label) => {
@@ -17,6 +30,16 @@ const Dashboard = () => {
       setCurrentView('projectView');
     }
   };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      localStorage.removeItem('username'); 
+      navigate('/login'); 
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
 
   // Handle going back to the dashboard
   const handleBack = () => {
@@ -101,8 +124,7 @@ const Dashboard = () => {
       {/* Top Section */}
       <div className="top-section">
         <div className="left-content">
-          <span>{selectedProject || 'Welcome Chris'}</span>
-          {/* Show Back button if not on the dashboard */}
+          <span>{selectedProject || `Welcome ${username}`}</span> 
           {currentView !== 'dashboard' && (
             <Button
               variant="contained"
@@ -115,7 +137,12 @@ const Dashboard = () => {
             </Button>
           )}
         </div>
-        <div className="right-content">Pascual Creative</div>
+        <div className="right-content">
+          Pascual Creative
+          <Button variant="contained" color="secondary" onClick={handleLogout} style={{ marginLeft: '10px' }}>
+            Logout
+          </Button>
+        </div>
       </div>
 
       {/* Main Content */}

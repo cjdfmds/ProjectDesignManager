@@ -13,6 +13,7 @@ function App() {
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
       <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/ProjectDesignManager" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/start-new-project" element={<StartNewProject />} />
