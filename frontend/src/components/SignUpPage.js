@@ -2,9 +2,9 @@ import { TextField, Button, Container, Typography, Box, Alert, CircularProgress 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import awsConfig from '../aws-exports';
-import { Amplify } from 'aws-amplify'; 
-import { signUp, confirmSignUp } from 'aws-amplify/auth';
-import AWS from 'aws-sdk'
+import { Amplify } from 'aws-amplify';
+import { confirmSignUp } from 'aws-amplify/auth';
+import AWS from 'aws-sdk';
 
 Amplify.configure(awsConfig);
 AWS.config.update({
@@ -12,16 +12,15 @@ AWS.config.update({
   accessKeyId: awsConfig.aws_access_key_id,
   secretAccessKey: awsConfig.aws_secret_access_key,
 });
-console.log(Amplify.getConfig());
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('')
-  const [confirmationCode, setConfirmationCode] = useState(''); 
+  const [username, setUsername] = useState('');
+  const [confirmationCode, setConfirmationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isConfirmationStep, setIsConfirmationStep] = useState(false); 
+  const [isConfirmationStep, setIsConfirmationStep] = useState(false);
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -38,45 +37,37 @@ const SignUpPage = () => {
     if (!validateForm()) {
       return;
     }
-
+  
     setIsLoading(true);
     try {
-      // Email uniqueness check
       const cognito = new AWS.CognitoIdentityServiceProvider();
-      const params = {      
-        UserPoolId: awsConfig.aws_user_pools_id, 
-        Username: email, 
+      const params = {
+        UserPoolId: awsConfig.aws_user_pools_id,
+        Filter: `email = "${email}"`, // Filter for email
       };
-
-      try {
-        await cognito.adminGetUser(params).promise();
+  
+      const existingUsers = await cognito.listUsers(params).promise();
+      if (existingUsers.Users && existingUsers.Users.length > 0) {
         setError('An account with this email already exists.');
-        return;
-      } catch (error) {
-        if (error.code !== 'UserNotFoundException') {
-          throw error; 
-        }
+        setIsLoading(false);
+        return; // Stop execution if email is already registered
       }
-
+  
       // Proceed with signup
-      const { isSignUpComplete } = await signUp({
-        username: email, // Use email as username
-        password,
-        options: {
-          userAttributes: {
-            email,
+      await cognito.signUp({
+        ClientId: awsConfig.aws_user_pools_web_client_id,
+        Username: username, 
+        Password: password,
+        UserAttributes: [
+          {
+            Name: 'email',
+            Value: email,
           },
-        }
-      });
-
-      if (isSignUpComplete) {
-        alert('Sign up complete!');
-        navigate('/login'); 
-      } else {
-        alert('Sign up successful! Please check your email for the confirmation code.');
-        setIsConfirmationStep(true); 
-      }
-
+        ],
+      }).promise();
+  
+      alert('Sign up successful! Please check your email for the confirmation code.');
+      setIsConfirmationStep(true);
     } catch (error) {
       console.error('Error during sign up:', error);
       setError(error.message || 'An error occurred during signup.');
@@ -84,28 +75,28 @@ const SignUpPage = () => {
       setIsLoading(false);
     }
   };
+  
 
   const handleConfirmSignUp = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { isSignUpComplete, nextStep } = await confirmSignUp({
-        username: email, // Use email directly
+      await confirmSignUp({
+        username, // Use the username, not the email
         confirmationCode,
         options: {
-          forceAliasCreation: true 
-        }
+          forceAliasCreation: true,
+        },
       });
 
-      if (isSignUpComplete) {
-        alert('Account confirmed! Redirecting to login page.');
-        navigate('/login');
-      } else {
-        console.log('Next step:', nextStep); 
-      }
+      alert('Account confirmed! Redirecting to login page.');
+      navigate('/login');
     } catch (error) {
       console.error('Error during confirmation:', error);
-      if (error.code === 'NotAuthorizedException' && error.message.includes('Current status is CONFIRMED')) {
+      if (
+        error.code === 'NotAuthorizedException' &&
+        error.message.includes('Current status is CONFIRMED')
+      ) {
         alert('User is already confirmed. Redirecting to login.');
         navigate('/login');
       } else {
@@ -115,6 +106,7 @@ const SignUpPage = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <Container maxWidth="sm">
       <Box
@@ -204,7 +196,13 @@ const SignUpPage = () => {
             sx={{ mt: 3, mb: 2 }}
             disabled={isLoading}
           >
-            {isLoading ? <CircularProgress size={24} /> : isConfirmationStep ? 'Confirm Sign Up' : 'Sign Up'}
+            {isLoading ? (
+              <CircularProgress size={24} />
+            ) : isConfirmationStep ? (
+              'Confirm Sign Up'
+            ) : (
+              'Sign Up'
+            )}
           </Button>
         </Box>
       </Box>

@@ -1,8 +1,8 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "resourceNameTruncated": "fronteede398db",
-    "userPoolName": "frontendede398db_userpool_ede398db",
+    "resourceNameTruncated": "fronteea285e6b",
+    "userPoolName": "frontendea285e6b_userpool_ea285e6b",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -29,17 +29,21 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "fronteede398db_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "fronteea285e6b_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "ede398db",
-    "resourceName": "frontendede398dbede398db",
+    "sharedId": "ea285e6b",
+    "resourceName": "frontendea285e6bea285e6b",
     "authSelections": "userPoolOnly",
     "useDefault": "manual",
-    "userPoolGroups": false,
-    "adminQueries": false,
+    "userPoolGroups": true,
+    "adminQueries": true,
     "triggers": {},
     "hostedUI": false,
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+      "Users",
+      "Admins"
+    ],
+    "adminQueryGroup": "Admins",
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true
