@@ -2,59 +2,81 @@ import { TextField, Button, Container, Typography, Box, Alert, CircularProgress 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import awsConfig from '../aws-exports';
-import { Amplify } from 'aws-amplify'; // Ensure Auth is imported
-import { signUp,confirmSignUp } from 'aws-amplify/auth';
+import { Amplify } from 'aws-amplify'; 
+import { signUp, confirmSignUp } from 'aws-amplify/auth';
+import AWS from 'aws-sdk'
 
-Amplify.configure(awsConfig); // Configure Amplify
+Amplify.configure(awsConfig);
+AWS.config.update({
+  region: 'ap-southeast-2', // e.g., 'us-east-1'
+  accessKeyId: awsConfig.aws_access_key_id,
+  secretAccessKey: awsConfig.aws_secret_access_key,
+});
+console.log(Amplify.getConfig());
 
 const SignUpPage = () => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmationCode, setConfirmationCode] = useState(''); // For confirmation code
+  const [username, setUsername] = useState('')
+  const [confirmationCode, setConfirmationCode] = useState(''); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isConfirmationStep, setIsConfirmationStep] = useState(false); // Track whether user is at confirmation step
+  const [isConfirmationStep, setIsConfirmationStep] = useState(false); 
   const navigate = useNavigate();
 
   const validateForm = () => {
-    const usernameRegex = /^[a-zA-Z0-9]+$/; // Only allows letters and numbers
-    if (!usernameRegex.test(username)) {
-      setError('Username should not contain special characters.');
-      return false;
-    }
-
     if (password.length < 6) {
       setError('Password should be at least 6 characters long.');
       return false;
     }
-
     setError('');
     return true;
   };
 
-  // Handle signup
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) {
       return;
     }
 
     setIsLoading(true);
     try {
-      // Use AWS Amplify Auth to sign up
-      await signUp({
-        username,
+      // Email uniqueness check
+      const cognito = new AWS.CognitoIdentityServiceProvider();
+      const params = {      
+        UserPoolId: awsConfig.aws_user_pools_id, 
+        Username: email, 
+      };
+
+      try {
+        await cognito.adminGetUser(params).promise();
+        setError('An account with this email already exists.');
+        return;
+      } catch (error) {
+        if (error.code !== 'UserNotFoundException') {
+          throw error; 
+        }
+      }
+
+      // Proceed with signup
+      const { isSignUpComplete } = await signUp({
+        username: email, // Use email as username
         password,
-        options:{
-        userAttributes: { email },
+        options: {
+          userAttributes: {
+            email,
+          },
         }
       });
 
-      alert('Sign up successful! Please check your email for the confirmation code.');
-      setIsConfirmationStep(true); // Move to the confirmation step
-      localStorage.setItem('username', username); // Store the username in local storage
+      if (isSignUpComplete) {
+        alert('Sign up complete!');
+        navigate('/login'); 
+      } else {
+        alert('Sign up successful! Please check your email for the confirmation code.');
+        setIsConfirmationStep(true); 
+      }
+
     } catch (error) {
       console.error('Error during sign up:', error);
       setError(error.message || 'An error occurred during signup.');
@@ -63,39 +85,36 @@ const SignUpPage = () => {
     }
   };
 
-  // Handle account confirmation with code
   const handleConfirmSignUp = async (e) => {
     e.preventDefault();
-
     setIsLoading(true);
     try {
-      const storedUsername = localStorage.getItem('username'); // Retrieve the username from local storage
-
-      if (!storedUsername) {
-        setError('Username is missing. Please sign up again.');
-        return;
-      }
-
-      // Correct structure for confirmSignUp
-      const { isSignUpComplete, nextStep } = confirmSignUp({
-        username: storedUsername, // Pass the stored username
-        confirmationCode,         // Pass the confirmation code from state
+      const { isSignUpComplete, nextStep } = await confirmSignUp({
+        username: email, // Use email directly
+        confirmationCode,
+        options: {
+          forceAliasCreation: true 
+        }
       });
 
       if (isSignUpComplete) {
         alert('Account confirmed! Redirecting to login page.');
         navigate('/login');
       } else {
-        console.log('Next step:', nextStep);
+        console.log('Next step:', nextStep); 
       }
     } catch (error) {
       console.error('Error during confirmation:', error);
-      setError(error.message || 'An error occurred during confirmation.');
+      if (error.code === 'NotAuthorizedException' && error.message.includes('Current status is CONFIRMED')) {
+        alert('User is already confirmed. Redirecting to login.');
+        navigate('/login');
+      } else {
+        setError(error.message || 'An error occurred during confirmation.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
   return (
     <Container maxWidth="sm">
       <Box

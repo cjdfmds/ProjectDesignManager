@@ -7,6 +7,7 @@ import ProjectQueue from './components/ProjectQueue'; // Import your ProjectQueu
 import CompletedProjects from './components/CompletedProjects'; // Import your CompletedProjects component
 import SignUpPage from './components/SignUpPage';
 
+
 function App() {
   
   return (
