@@ -1,56 +1,51 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import AWS from 'aws-sdk';
+import { generateClient } from 'aws-amplify/api';
+import { uploadData } from 'aws-amplify/storage';
 
-const ProjectForm = ({ projectName }) => {
-  const [name, setName] = useState('');
+
+const ProjectForm = ({ projectType }) => {
+  const [projectName, setProjectName] = useState('');
   const [brief, setBrief] = useState('');
   const [dateNeeded, setDateNeeded] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
+
+// API Client
+const apiClient = generateClient(); 
   
-    const s3 = new AWS.S3();
-  
-    const handleFileUpload = (e) => {
+    const handleFileUpload = async (e) => {
       const file = e.target.files[0];
-      setUploadedFile(file);
-      
       if (file) {
-        const params = {
-          Bucket: 'creationhub-erps', // Replace with your bucket name
-          Key: file.name,
-          Body: file,
-          //ACL: 'public-read', // Adjust according to your use case
-        };
-  
-        s3.upload(params, (err, data) => {
-          if (err) {
-            console.error('Error uploading file:', err);
-          } else {
-            console.log('File uploaded successfully', data.Location);
-          }
-        });
+        setUploadedFile(file);
+        try {
+          const uploadResult = await uploadData(file.name, file, {
+            contentType: file.type,
+          });
+          console.log('File uploaded successfully:', uploadResult.key);
+        } catch (error) {
+          console.error('Error uploading file:', error);
+        }
       }
-    }; 
+    };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      // Assuming you have the uploaded file in state
-      const formData = new FormData();
-      formData.append('file', uploadedFile);
+      const projectData = {
+        projectType,
+        projectName,
+        brief,
+        dateNeeded,
+        fileKey: uploadedFile?.name,
+        status: 'in-progress',
+      };
   
-      const response = await fetch('http://localhost:3000/upload', {
-          method: 'POST',
-          body: formData
-      });
-  
-      if (response.ok) {
-          const data = await response.json();
-          console.log('File uploaded successfully:', data.url);
-      } else {
-          console.error('File upload failed');
+      try {
+        await apiClient.post('frontend', '/projects', { body: projectData });
+        alert('Project submitted successfully!');
+      } catch (error) {
+        console.error('Failed to submit project:', error);
       }
-  };
-  
+    };
 
   return (
     <Box
@@ -69,14 +64,14 @@ const ProjectForm = ({ projectName }) => {
       }}
     >
       <Typography variant="h6" gutterBottom>
-        {projectName || 'Project Form'}
+        {projectType || 'Project Form'}
       </Typography>
 
       {/* Project Name */}
       <TextField
         label="Project Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={projectName}
+        onChange={(e) => setProjectName(e.target.value)}
         inputProps={{ maxLength: 50 }}
         required
       />

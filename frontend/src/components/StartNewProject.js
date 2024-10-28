@@ -27,7 +27,7 @@ const StartNewProject = () => {
     return (
       <Box className="project-form-container">
         {/* Pass the selected project name to the ProjectForm component */}
-        <ProjectForm projectName={selectedProject} />
+        <ProjectForm projectType={selectedProject} />
       </Box>
     );
   }
