@@ -4,9 +4,22 @@ import { post } from 'aws-amplify/api';
 import { uploadData } from 'aws-amplify/storage';
 import awsConfig from '../aws-exports'; // Ensure the correct path
 import { Amplify } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth'
 
 
-Amplify.configure(awsConfig); // Configure Amplify
+Amplify.configure(awsConfig, {
+  API: {
+    REST: {
+      headers: async () => {
+        return { Authorization: authToken };
+      }
+    }
+  }
+}); // Configure Amplify
+
+const authToken = (await fetchAuthSession()).tokens?.idToken?.toString();
+
+//console.log(authToken);
 
 const ProjectForm = ({ projectType }) => {
   const [projectName, setProjectName] = useState('');
@@ -53,24 +66,25 @@ const ProjectForm = ({ projectType }) => {
   //   }
   // };
 
-  async function handleSubmit() {
-    const projectData = {
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const projectData = {    
       projectType,
       projectName,
       brief,
       dateNeeded,
-      fileKey: uploadedFile?.name,
+      fileKey: uploadedFile ? uploadedFile.name : null,
       status: 'in-progress',
     };
 
     try {
       const restOperation = post({
-        apiName: 'PDMprojectRequest',
-        path: '/items',
+        apiName: 'PDMrequest',
+        path: '/PDMLambdaRest-dev',
         options: {
           headers:
           {
-            Authorization: 'test'
+            'Content-Type': 'application/json'  // Ensure JSON format
           },
 
           body:
