@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import { generateClient } from 'aws-amplify/api';
+import { post } from 'aws-amplify/api';
 import { uploadData } from 'aws-amplify/storage';
+import awsConfig from '../aws-exports'; // Ensure the correct path
+import { Amplify } from 'aws-amplify';
 
+
+Amplify.configure(awsConfig); // Configure Amplify
 
 const ProjectForm = ({ projectType }) => {
   const [projectName, setProjectName] = useState('');
@@ -10,42 +14,79 @@ const ProjectForm = ({ projectType }) => {
   const [dateNeeded, setDateNeeded] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
 
-// API Client
-const apiClient = generateClient(); 
-  
-    const handleFileUpload = async (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        setUploadedFile(file);
-        try {
-          const uploadResult = await uploadData(file.name, file, {
-            contentType: file.type,
-          });
-          console.log('File uploaded successfully:', uploadResult.key);
-        } catch (error) {
-          console.error('Error uploading file:', error);
-        }
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedFile(file);
+      try {
+        const uploadResult = await uploadData(file.name, file, {
+          contentType: file.type,
+        });
+        console.log('File uploaded successfully:', uploadResult.key);
+      } catch (error) {
+        console.error('Error uploading file:', error);
       }
+    }
+  };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const projectData = {
+  //     projectType,
+  //     projectName,
+  //     brief,
+  //     dateNeeded,
+  //     fileKey: uploadedFile?.name,
+  //     status: 'in-progress',
+  //   };
+
+  //   try {
+  //     // API request using `put` for Amplify v6
+  //     await post('PDMprojectRequest', '/items', { body: projectData });
+  //     alert('Project submitted successfully!');
+  //     console.log('POST call succeeded');
+  //     console.log(projectData);
+  //   } catch (error) {
+  //     console.log('POST call failed: ', JSON.parse(projectData));
+  //     console.error('Failed to submit project:', error);
+  //   }
+  // };
+
+  async function handleSubmit() {
+    const projectData = {
+      projectType,
+      projectName,
+      brief,
+      dateNeeded,
+      fileKey: uploadedFile?.name,
+      status: 'in-progress',
     };
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const projectData = {
-        projectType,
-        projectName,
-        brief,
-        dateNeeded,
-        fileKey: uploadedFile?.name,
-        status: 'in-progress',
-      };
-  
-      try {
-        await apiClient.post('frontend', '/projects', { body: projectData });
-        alert('Project submitted successfully!');
-      } catch (error) {
-        console.error('Failed to submit project:', error);
-      }
-    };
+    try {
+      const restOperation = post({
+        apiName: 'PDMprojectRequest',
+        path: '/items',
+        options: {
+          headers:
+          {
+            Authorization: 'test'
+          },
+
+          body:
+          {
+            projectData
+          }
+        }
+      });
+      const { body } = await restOperation.response;
+      const response = await body.json();
+      console.log('POST call succeeded');
+      console.log(response);
+    } catch (e) {
+      console.log('POST call failed: ', JSON.parse(e.response.body));
+    }
+  }
 
   return (
     <Box
@@ -58,7 +99,7 @@ const apiClient = generateClient();
         width: '100%',
         maxWidth: '400px',
         margin: 'auto',
-        padding: 3,        
+        padding: 3,
         backgroundColor: '#f4f4f4',
         borderRadius: 2,
       }}

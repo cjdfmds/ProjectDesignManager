@@ -22,36 +22,19 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "frontend": {
+    "PDMrequest": {
       "dependsOn": [
         {
           "attributes": [
-            "UserPoolId"
+            "Name",
+            "Arn"
           ],
-          "category": "auth",
-          "resourceName": "frontendea285e6bea285e6b"
+          "category": "function",
+          "resourceName": "PDMLambdaRest"
         }
       ],
-      "output": {
-        "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authfrontendea285e6bea285e6b"
-              }
-            }
-          ],
-          "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
-            },
-            "authenticationType": "API_KEY"
-          }
-        }
-      },
       "providerPlugin": "awscloudformation",
-      "service": "AppSync"
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -110,6 +93,44 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "PDMLambdaRest": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "UserRequestLambda": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -128,9 +149,45 @@
           "resourceName": "AdminQueriesd610df9c"
         }
       ]
+    },
+    "AMPLIFY_function_PDMLambdaRest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMLambdaRest"
+        }
+      ]
+    },
+    "AMPLIFY_function_PDMLambdaRest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMLambdaRest"
+        }
+      ]
+    },
+    "AMPLIFY_function_UserRequestLambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "UserRequestLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_UserRequestLambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "UserRequestLambda"
+        }
+      ]
     }
   },
   "storage": {
+    "PDMDynamo": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "PDMstorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",

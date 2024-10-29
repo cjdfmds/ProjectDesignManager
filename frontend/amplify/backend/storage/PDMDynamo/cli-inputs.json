@@ -1,0 +1,10 @@
+{
+  "resourceName": "PDMDynamo",
+  "tableName": "PDMDynamo",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

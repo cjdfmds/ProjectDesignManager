@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-frontend-dev-7ee19-unauthRole",
       "StackName": "amplify-frontend-dev-7ee19",
       "StackId": "arn:aws:cloudformation:ap-southeast-2:557690614471:stack/amplify-frontend-dev-7ee19/0a06f1b0-9387-11ef-b46e-06d28d766837",
-      "AmplifyAppId": "dz5rg3w4brmfs"
+      "AmplifyAppId": "dz5rg3w4brmfs",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-frontend-dev-7ee19-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -20,14 +21,23 @@
         "AdminQueriesd610df9c": {
           "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
           "s3Key": "amplify-builds/AdminQueriesd610df9c-73326e41716a6c595971-build.zip"
+        },
+        "UserRequestLambda": {
+          "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
+          "s3Key": "amplify-builds/UserRequestLambda-5669384c594f4e79577a-build.zip"
+        },
+        "PDMLambdaRest": {
+          "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
+          "s3Key": "amplify-builds/PDMLambdaRest-43656150444a35456854-build.zip"
         }
       },
       "api": {
         "AdminQueries": {},
-        "frontend": {}
+        "PDMrequest": {}
       },
       "storage": {
-        "PDMstorage": {}
+        "PDMstorage": {},
+        "PDMDynamo": {}
       }
     }
   }
