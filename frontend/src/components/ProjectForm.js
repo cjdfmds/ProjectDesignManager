@@ -4,20 +4,20 @@ import { post } from 'aws-amplify/api';
 import { uploadData } from 'aws-amplify/storage';
 import awsConfig from '../aws-exports'; // Ensure the correct path
 import { Amplify } from 'aws-amplify';
-import { fetchAuthSession } from 'aws-amplify/auth'
+//import { fetchAuthSession } from 'aws-amplify/auth'
 
 
 Amplify.configure(awsConfig, {
   API: {
-    REST: {
-      headers: async () => {
-        return { Authorization: authToken };
-      }
-    }
+    //REST: {
+     // headers: async () => {
+      //  return { Authorization: authToken };
+     // }
+  //  }
   }
 }); // Configure Amplify
 
-const authToken = (await fetchAuthSession()).tokens?.idToken?.toString();
+//const authToken = (await fetchAuthSession()).tokens?.idToken?.toString();
 
 //console.log(authToken);
 

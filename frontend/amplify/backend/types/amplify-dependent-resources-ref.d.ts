@@ -31,14 +31,6 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "PDMDynamo": {
-      "Arn": "string",
-      "Name": "string",
-      "PartitionKeyName": "string",
-      "PartitionKeyType": "string",
-      "Region": "string",
-      "StreamArn": "string"
-    },
     "PDMstorage": {
       "BucketName": "string",
       "Region": "string"

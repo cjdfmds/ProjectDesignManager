@@ -93,44 +93,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    },
-    "PDMLambdaRest": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "storage",
-          "resourceName": "PDMDynamo"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "UserRequestLambda": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "storage",
-          "resourceName": "PDMDynamo"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
     }
   },
   "parameters": {
@@ -149,45 +111,9 @@
           "resourceName": "AdminQueriesd610df9c"
         }
       ]
-    },
-    "AMPLIFY_function_PDMLambdaRest_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "PDMLambdaRest"
-        }
-      ]
-    },
-    "AMPLIFY_function_PDMLambdaRest_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "PDMLambdaRest"
-        }
-      ]
-    },
-    "AMPLIFY_function_UserRequestLambda_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "UserRequestLambda"
-        }
-      ]
-    },
-    "AMPLIFY_function_UserRequestLambda_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "UserRequestLambda"
-        }
-      ]
     }
   },
   "storage": {
-    "PDMDynamo": {
-      "providerPlugin": "awscloudformation",
-      "service": "DynamoDB"
-    },
     "PDMstorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",

@@ -21,14 +21,6 @@
         "AdminQueriesd610df9c": {
           "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
           "s3Key": "amplify-builds/AdminQueriesd610df9c-73326e41716a6c595971-build.zip"
-        },
-        "UserRequestLambda": {
-          "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
-          "s3Key": "amplify-builds/UserRequestLambda-5669384c594f4e79577a-build.zip"
-        },
-        "PDMLambdaRest": {
-          "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
-          "s3Key": "amplify-builds/PDMLambdaRest-43656150444a35456854-build.zip"
         }
       },
       "api": {
@@ -36,8 +28,7 @@
         "PDMrequest": {}
       },
       "storage": {
-        "PDMstorage": {},
-        "PDMDynamo": {}
+        "PDMstorage": {}
       }
     }
   }
