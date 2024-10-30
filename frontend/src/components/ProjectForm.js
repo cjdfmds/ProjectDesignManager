@@ -66,6 +66,7 @@ const ProjectForm = ({ projectType }) => {
   //   }
   // };
 
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     const projectData = {    

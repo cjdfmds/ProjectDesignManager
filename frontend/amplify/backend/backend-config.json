@@ -22,6 +22,20 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "PDMAPIcli": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "PDMCRUDcli"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "PDMrequest": {
       "dependsOn": [
         {
@@ -93,6 +107,25 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "PDMCRUDcli": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -111,9 +144,87 @@
           "resourceName": "AdminQueriesd610df9c"
         }
       ]
+    },
+    "AMPLIFY_function_PDMCRUDcli_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMCRUDcli"
+        }
+      ]
+    },
+    "AMPLIFY_function_PDMCRUDcli_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMCRUDcli"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_sortKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_sortKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_storage_PDMDynamo_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ]
     }
   },
   "storage": {
+    "PDMDynamo": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    },
     "PDMstorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
