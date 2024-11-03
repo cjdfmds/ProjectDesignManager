@@ -3,7 +3,20 @@
   "paths": {
     "/items": {
       "name": "/items",
-      "lambdaFunction": "PDMCRUDcli",
+      "lambdaFunction": "PDMRestCLI",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/projects": {
+      "name": "/projects",
+      "lambdaFunction": "PDMRestCLI",
       "permissions": {
         "setting": "private",
         "auth": [

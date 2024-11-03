@@ -6,7 +6,24 @@ import StartNewProject from './components/StartNewProject'; // Import your compo
 import ProjectQueue from './components/ProjectQueue'; // Import your ProjectQueue component
 import CompletedProjects from './components/CompletedProjects'; // Import your CompletedProjects component
 import SignUpPage from './components/SignUpPage';
+import { Amplify } from 'aws-amplify';
+import { defaultStorage } from 'aws-amplify/utils';
+import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth/cognito';
+import awsConfig from './aws-exports'; // Adjust the path as needed
 
+
+const authConfig = {
+  Cognito: {
+    userPoolId: awsConfig.aws_user_pools_id,  
+    userPoolClientId: awsConfig.aws_user_pools_web_client_id,
+  }
+};
+
+Amplify.configure({
+  Auth: authConfig
+});
+
+cognitoUserPoolsTokenProvider.setKeyValueStorage(defaultStorage);
 
 function App() {
   

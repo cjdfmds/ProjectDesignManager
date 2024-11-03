@@ -22,7 +22,7 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "PDMAPIcli": {
+    "PDMapiCLI": {
       "dependsOn": [
         {
           "attributes": [
@@ -30,21 +30,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "PDMCRUDcli"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
-    },
-    "PDMrequest": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "PDMLambdaRest"
+          "resourceName": "PDMRestCLI"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -126,6 +112,25 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "PDMRestCLI": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -158,6 +163,22 @@
         {
           "category": "function",
           "resourceName": "PDMCRUDcli"
+        }
+      ]
+    },
+    "AMPLIFY_function_PDMRestCLI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMRestCLI"
+        }
+      ]
+    },
+    "AMPLIFY_function_PDMRestCLI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMRestCLI"
         }
       ]
     },

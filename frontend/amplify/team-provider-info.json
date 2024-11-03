@@ -1,16 +1,16 @@
 {
-  "dev": {
+  "devv": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-frontend-dev-7ee19-authRole",
-      "UnauthRoleArn": "arn:aws:iam::557690614471:role/amplify-frontend-dev-7ee19-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::557690614471:role/amplify-frontend-dev-7ee19-authRole",
+      "AuthRoleName": "amplify-frontend-devv-31e55-authRole",
+      "UnauthRoleArn": "arn:aws:iam::557690614471:role/amplify-frontend-devv-31e55-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::557690614471:role/amplify-frontend-devv-31e55-authRole",
       "Region": "ap-southeast-2",
-      "DeploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
-      "UnauthRoleName": "amplify-frontend-dev-7ee19-unauthRole",
-      "StackName": "amplify-frontend-dev-7ee19",
-      "StackId": "arn:aws:cloudformation:ap-southeast-2:557690614471:stack/amplify-frontend-dev-7ee19/0a06f1b0-9387-11ef-b46e-06d28d766837",
+      "DeploymentBucketName": "amplify-frontend-devv-31e55-deployment",
+      "UnauthRoleName": "amplify-frontend-devv-31e55-unauthRole",
+      "StackName": "amplify-frontend-devv-31e55",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:557690614471:stack/amplify-frontend-devv-31e55/f962b6c0-9762-11ef-9a10-06f7b30d24e9",
       "AmplifyAppId": "dz5rg3w4brmfs",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-frontend-dev-7ee19-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-frontend-devv-31e55-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -19,21 +19,20 @@
       },
       "function": {
         "AdminQueriesd610df9c": {
-          "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
+          "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
           "s3Key": "amplify-builds/AdminQueriesd610df9c-73326e41716a6c595971-build.zip"
         },
         "PDMCRUDcli": {
-          "deploymentBucketName": "amplify-frontend-dev-7ee19-deployment",
+          "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
           "s3Key": "amplify-builds/PDMCRUDcli-434f7861706f747a4857-build.zip"
+        },
+        "frontendea285e6bea285e6b": {},
+        "PDMRestCLI": {
+          "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
+          "s3Key": "amplify-builds/PDMRestCLI-315961634b35316b3462-build.zip"
         }
       },
-      "api": {
-        "AdminQueries": {},
-        "PDMrequest": {},
-        "PDMAPIcli": {}
-      },
       "storage": {
-        "PDMstorage": {},
         "PDMDynamo": {
           "tableName": "PDMDynamo",
           "region": "ap-southeast-2",
@@ -42,7 +41,12 @@
           "partitionKeyType": "S",
           "sortKeyName": "userID",
           "sortKeyType": "S"
-        }
+        },
+        "PDMstorage": {}
+      },
+      "api": {
+        "AdminQueries": {},
+        "PDMapiCLI": {}
       }
     }
   }

@@ -16,7 +16,7 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": true,
+    "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
@@ -36,9 +36,9 @@
     "sharedId": "ea285e6b",
     "resourceName": "frontendea285e6bea285e6b",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "manual",
-    "userPoolGroups": true,
-    "adminQueries": true,
+    "useDefault": "default",
+    "userPoolGroups": false,
+    "adminQueries": false,
     "triggers": {},
     "hostedUI": false,
     "userPoolGroupList": [
@@ -62,6 +62,11 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": []
+    "dependsOn": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "authProviders": []
   }
 }

@@ -1,40 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, CircularProgress } from '@mui/material';
-import { signIn } from 'aws-amplify/auth';
+//import { signIn } from 'aws-amplify/auth';
 import awsConfig from '../aws-exports'; // Ensure the correct path
 import { Amplify } from 'aws-amplify';
+//import { getCurrentUser } from 'aws-amplify/auth';
+import AWS from 'aws-sdk';
 
 
 Amplify.configure(awsConfig); // Configure Amplify
-
-const LoginPage = () => {
+AWS.config.update({
+  region: awsConfig.aws_project_region,
+});
+const LoginPage = ({setToken}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+ 
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    const cognito = new AWS.CognitoIdentityServiceProvider();
     setIsLoading(true);
 
+    const params = {
+      AuthFlow: 'USER_PASSWORD_AUTH',
+      ClientId: awsConfig.aws_user_pools_web_client_id,
+      AuthParameters: {
+        USERNAME: username,
+        PASSWORD: password,
+      },
+    };
+
     try {
-      // Pass the authFlowType as part of the signIn options
-      await signIn({
-        username,
-        password,
-        authFlowType: 'CUSTOM_WITHOUT_SRP', // Specify the custom authentication flow
-      });
-      
-      alert('Login successful!');
+      const response = await cognito.initiateAuth(params).promise();
+      const idToken = response.AuthenticationResult.IdToken;
+      setToken(idToken);
+      localStorage.setItem('authToken', idToken);
+      console.log('Sign in successful:', response);
+      alert('Sign in successful!');
       localStorage.setItem('username', username);
       navigate('/dashboard', { state: { username } });
     } catch (error) {
-      console.error('Login error:', error);
-      alert(error.message || 'Login failed.');
-    } finally {
-      setIsLoading(false);
+      console.error('Sign in failed:', error);
+      setError('Sign in failed. Please check your username and password.');
     }
+   finally {
+    setIsLoading(false);
+   }
+
   };
 
   return (
@@ -63,6 +79,11 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && (
+        <Typography variant="body2" color="error">
+          {error}
+        </Typography>
+      )}
           <Box mt={2}>
             <Button
               type="submit"

@@ -5,7 +5,7 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
-    "PDMAPIcli": {
+    "PDMapiCLI": {
       "ApiId": "string",
       "ApiName": "string",
       "RootUrl": "string"
@@ -35,6 +35,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "PDMCRUDcli": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "PDMRestCLI": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
