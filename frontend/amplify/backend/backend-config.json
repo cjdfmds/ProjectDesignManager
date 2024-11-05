@@ -131,6 +131,25 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "PDMRestOperation": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "PDMDynamo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -179,6 +198,22 @@
         {
           "category": "function",
           "resourceName": "PDMRestCLI"
+        }
+      ]
+    },
+    "AMPLIFY_function_PDMRestOperation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMRestOperation"
+        }
+      ]
+    },
+    "AMPLIFY_function_PDMRestOperation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PDMRestOperation"
         }
       ]
     },

@@ -20,16 +20,20 @@
       "function": {
         "AdminQueriesd610df9c": {
           "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
-          "s3Key": "amplify-builds/AdminQueriesd610df9c-73326e41716a6c595971-build.zip"
+          "s3Key": "amplify-builds/AdminQueriesd610df9c-5663546b6d7553795137-build.zip"
         },
         "PDMCRUDcli": {
           "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
-          "s3Key": "amplify-builds/PDMCRUDcli-434f7861706f747a4857-build.zip"
+          "s3Key": "amplify-builds/PDMCRUDcli-69616539447638504459-build.zip"
         },
         "frontendea285e6bea285e6b": {},
         "PDMRestCLI": {
           "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
-          "s3Key": "amplify-builds/PDMRestCLI-315961634b35316b3462-build.zip"
+          "s3Key": "amplify-builds/PDMRestCLI-53416950536a2b32374e-build.zip"
+        },
+        "PDMRestOperation": {
+          "deploymentBucketName": "amplify-frontend-devv-31e55-deployment",
+          "s3Key": "amplify-builds/PDMRestOperation-676376376b33734f776a-build.zip"
         }
       },
       "storage": {

@@ -5,6 +5,18 @@ import './HolyMotherOf.css';
 import StartNewProject from './StartNewProject';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import Back Arrow Icon
 import { signOut } from 'aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import awsConfig from '../aws-exports';
+
+Amplify.configure({...awsConfig,
+  Auth: {
+    userPoolId: 'awsConfig.aws_user_pools_id',
+    userPoolWebClientId: 'awsConfig.aws_user_pools_web_client_id',
+    identityPoolId: 'awsConfig.aws_cognito_identity_pool_id',
+    region: 'awsConfig.aws_project_region', // Add the region if it's missing
+    authenticationFlowType: 'USER_PASSWORD_AUTH',
+  },
+});
 
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState('dashboard');

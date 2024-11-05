@@ -1,46 +1,58 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
-import Dashboard from './components/Dashboard';
-import StartNewProject from './components/StartNewProject'; // Import your components
-import ProjectQueue from './components/ProjectQueue'; // Import your ProjectQueue component
-import CompletedProjects from './components/CompletedProjects'; // Import your CompletedProjects component
-import SignUpPage from './components/SignUpPage';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
-import { defaultStorage } from 'aws-amplify/utils';
-import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth/cognito';
-import awsConfig from './aws-exports'; // Adjust the path as needed
-
-
-const authConfig = {
-  Cognito: {
-    userPoolId: awsConfig.aws_user_pools_id,  
-    userPoolClientId: awsConfig.aws_user_pools_web_client_id,
-  }
-};
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import Dashboard from './components/Dashboard';
+import StartNewProject from './components/StartNewProject';
+import ProjectQueue from './components/ProjectQueue';
+import CompletedProjects from './components/CompletedProjects';
+import awsConfig from './aws-exports';
 
 Amplify.configure({
-  Auth: authConfig
+  ...awsConfig,
+  Auth: {
+    userPoolId: awsConfig.aws_user_pools_id,
+    userPoolWebClientId: awsConfig.aws_user_pools_web_client_id,
+    identityPoolId: awsConfig.aws_cognito_identity_pool_id,
+    region: awsConfig.aws_project_region, // Add the region if it's missing
+    authenticationFlowType: 'USER_PASSWORD_AUTH',
+  },
 });
 
-cognitoUserPoolsTokenProvider.setKeyValueStorage(defaultStorage);
-
 function App() {
-  
   return (
     <Router basename={process.env.PUBLIC_URL}>
+      <Authenticator>
+        {({ signOut, user }) => (
+          <AuthenticatedApp signOut={signOut} user={user} />
+        )}
+      </Authenticator>
+    </Router>
+  );
+}
+
+function AuthenticatedApp({ signOut, user }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
+
+  return (
+    <div>
+      <h1>Welcome, {user.username}</h1>
       <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/ProjectDesignManager" element={<LoginPage />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/start-new-project" element={<StartNewProject />} />
         <Route path="/project-queue" element={<ProjectQueue />} />
         <Route path="/completed-projects" element={<CompletedProjects />} />
-        <Route path="/signup" element={<SignUpPage  />} />
-        
       </Routes>
-    </Router>
+      <button onClick={signOut}>Sign Out</button>
+    </div>
   );
 }
 
