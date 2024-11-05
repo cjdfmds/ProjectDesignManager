@@ -44,7 +44,7 @@ const ProjectForm = ({ projectType }) => {
       }
 
       const response = await post({
-        apiName: 'PDMapiCLI',
+        apiName: 'PDMRestOperations',
         path: '/items',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,8 @@ const ProjectForm = ({ projectType }) => {
         },
         body: projectData,
       });
-      const data = await response.response; // Await the resolution of the Promise
+      const data = await response.response; 
+      // Await the resolution of the Promise
       // console.log('token from storage response:', localStorage.getItem('authToken'));
       // console.log('token response:', token);
       console.log('API response:', data);
@@ -68,8 +69,8 @@ const ProjectForm = ({ projectType }) => {
 
       // Make the API request
       const response = await get({
-        apiName: 'PDMapiCLI',
-        path: `/items/${projectId}`, // Adjust this path if necessary
+        apiName: 'PDMRestOperations',
+        path: `/items`, // Adjust this path if necessary
         options: {
           headers: {
             'Content-Type': 'application/json',
