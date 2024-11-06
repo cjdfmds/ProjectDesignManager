@@ -1,27 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import { post, get } from 'aws-amplify/api';
-// import awsConfig from '../aws-exports'; // Adjust the path as needed
-// import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth';
-// import { Amplify } from 'aws-amplify';
+
+
 
 const ProjectForm = ({ projectType }) => {
   const [projectName, setProjectName] = useState('');
   const [brief, setBrief] = useState('');
   const [dateNeeded, setDateNeeded] = useState('');
-  //const [uploadedFile, setUploadedFile] = useState(null);
-  // const [isConfigured, setIsConfigured] = useState(false);
   const [projectData, setProjectData] = useState(null); // New state for storing fetched project data -testing
   const [projectId, setProjectId] = useState(''); // New state for projectId input -testing
-  const [token, setToken] = useState('');
 
-  useEffect(() => {
-    // Retrieve the token from local storage
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,53 +24,27 @@ const ProjectForm = ({ projectType }) => {
       //fileKey: uploadedFile ? uploadedFile.name : 'placeholder-file-key', // Use placeholder if no file is uploaded
       status: 'in-progress',
     };
-
-    try {
-
-      if (!token) {
-        throw new Error('User not authenticated or missing token');
-      }
-
-      const response = await post({
-        apiName: 'PDMRestOperations',
-        path: '/items',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: projectData,
-      });
-      const data = await response.response; 
-      // Await the resolution of the Promise
-      // console.log('token from storage response:', localStorage.getItem('authToken'));
-      // console.log('token response:', token);
-      console.log('API response:', data);
-      alert('Project submitted successfully!');
-    } catch (error) {
-      console.error('POST call failed:', error);
-      alert('Failed to submit project.');
-    }
   };
 
   const handleGetRequest = async () => {
     try {
 
-      // Make the API request
-      const response = await get({
-        apiName: 'PDMRestOperations',
-        path: `/items`, // Adjust this path if necessary
-        options: {
-          headers: {
-            'Content-Type': 'application/json',
+      // // Make the API request
+      // const response = await get({
+      //   apiName: 'PDMRestOperations',
+      //   path: `/items`, // Adjust this path if necessary
+      //   options: {
+      //     headers: {
+      //       'Content-Type': 'application/json',
            
-          },
-        },
-      });
+      //     },
+      //   },
+      // });
 
-      console.log('API response:', response);
-      setProjectData(response); // Store the fetched project data
+      // console.log('API response:', response);
+      // setProjectData(response); // Store the fetched project data
 
-      console.log('GET call succeeded');
+      // console.log('GET call succeeded');
     } catch (error) {
       console.error('GET request failed:', error);
       alert('Failed to fetch project.');

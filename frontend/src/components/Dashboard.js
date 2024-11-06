@@ -4,26 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import './HolyMotherOf.css';
 import StartNewProject from './StartNewProject';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import Back Arrow Icon
-import { signOut } from 'aws-amplify/auth';
-import { Amplify } from 'aws-amplify';
-import awsConfig from '../aws-exports';
-
-Amplify.configure({...awsConfig,
-  Auth: {
-    userPoolId: 'awsConfig.aws_user_pools_id',
-    userPoolWebClientId: 'awsConfig.aws_user_pools_web_client_id',
-    identityPoolId: 'awsConfig.aws_cognito_identity_pool_id',
-    region: 'awsConfig.aws_project_region', // Add the region if it's missing
-    authenticationFlowType: 'USER_PASSWORD_AUTH',
-  },
-});
 
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedProject, setSelectedProject] = useState(''); // Track the selected project
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
-
 
   useEffect(() => {
     // Fetch the username from localStorage on component mount
@@ -44,13 +30,13 @@ const Dashboard = () => {
   };
 
   const handleLogout = async () => {
-    try {
-      await signOut();
-      localStorage.removeItem('username'); 
-      navigate('/login'); 
-    } catch (error) {
-      console.log('error signing out: ', error);
-    }
+    // try {
+    //   await signOut();
+    //   localStorage.removeItem('username'); 
+    //   navigate('/login'); 
+    // } catch (error) {
+    //   console.log('error signing out: ', error);
+    // }
   }
 
   // Handle going back to the dashboard

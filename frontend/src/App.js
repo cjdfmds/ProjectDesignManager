@@ -1,24 +1,12 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import Dashboard from './components/Dashboard';
 import StartNewProject from './components/StartNewProject';
 import ProjectQueue from './components/ProjectQueue';
 import CompletedProjects from './components/CompletedProjects';
-import awsConfig from './aws-exports';
 
-Amplify.configure({
-  ...awsConfig,
-  Auth: {
-    userPoolId: awsConfig.aws_user_pools_id,
-    userPoolWebClientId: awsConfig.aws_user_pools_web_client_id,
-    identityPoolId: awsConfig.aws_cognito_identity_pool_id,
-    region: awsConfig.aws_project_region, // Add the region if it's missing
-    authenticationFlowType: 'USER_PASSWORD_AUTH',
-  },
-});
 
 function App() {
   return (
